@@ -19,7 +19,7 @@ build:
 
 requirements:
   host:
-    - python ${{ python_min }}
+    - python ${{ python_min }}.*
     - hatchling
     - pip
   run:
@@ -30,13 +30,14 @@ requirements:
     - opentelemetry-semantic-conventions-ai >=0.5.1,<0.6.0
 
 tests:
-  - python:
-      imports:
-        - opentelemetry.instrumentation.mistralai
-      pip_check: true
-      python_version:
-        - ${{ python_min }}
-        - "*"
+  - requirements:
+      run:
+        - python ${{ python_min }}.*
+        - mistralai >=1,<2
+        - pip
+    script:
+      - python -c "import opentelemetry.instrumentation.mistralai"
+      - pip check
 
 about:
   summary: OpenTelemetry Mistral AI instrumentation
